@@ -1,4 +1,5 @@
-const moment = require('moment')
-require('../momentkh')(moment)
-
+const moment = require("moment")
+require("../momentkh")(moment)
+const {getKhNewYearMoment2} = require("../momentkh")(moment)
+console.log(getKhNewYearMoment2(2023))
 console.log(moment.getKhNewYearMoment(2021))
