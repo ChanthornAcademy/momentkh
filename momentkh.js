@@ -745,7 +745,7 @@ khNewYearMoments = constant.khNewYearMoments
 			Moment.khNewYearMoments[gregorianYear] = result.format("DD-MM-YYYY H:m")
 			return {
 				result: result,
-				numberOfDay: numberNewYearDay,
+				numberOfDays: numberNewYearDay,
 			}
 		}
 	}
