@@ -743,9 +743,16 @@ khNewYearMoments = constant.khNewYearMoments
 			)
 			// Caching
 			Moment.khNewYearMoments[gregorianYear] = result.format("DD-MM-YYYY H:m")
+
+			let newYearDate = []
+			for (let i = 1; i <= numberNewYearDay; i++) {
+				const days = parseInt(result.format("D")) + i
+				newYearDate[i] = days
+			}
 			return {
 				result: result,
-				numberOfDays: numberNewYearDay,
+				days: newYearDate,
+				numberNewYearDay: numberNewYearDay,
 			}
 		}
 	}
