@@ -751,7 +751,7 @@ khNewYearMoments = constant.khNewYearMoments
 			// new Array(parseInt(numberNewYearDay)).forEach(() =>
 			// 	newYearDate.push(parseInt(result.format("D")) + 1)
 			// )
-			for (let i = 1; i <= numberNewYearDay; i++) {
+			for (let i = 0; i < numberNewYearDay; i++) {
 				const days = 0 + i
 				newYearDate.push(result.clone().add(days, "days").format())
 			}
