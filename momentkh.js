@@ -745,12 +745,9 @@ khNewYearMoments = constant.khNewYearMoments
 				"day"
 			)
 			// Caching
-			Moment.khNewYearMoments[gregorianYear] = result.format("DD-MM-YYYY H:m")
+			// Moment.khNewYearMoments[gregorianYear] = result.format("DD-MM-YYYY H:m")
 
 			let newYearDate = []
-			// new Array(parseInt(numberNewYearDay)).forEach(() =>
-			// 	newYearDate.push(parseInt(result.format("D")) + 1)
-			// )
 			for (let i = 0; i < numberNewYearDay; i++) {
 				const days = 0 + i
 				newYearDate.push(result.clone().add(days, "days").format())
