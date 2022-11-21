@@ -694,68 +694,60 @@ khNewYearMoments = constant.khNewYearMoments
 		}
 	}
 	function getKhNewYearMoment2(gregorianYear) {
-		if (Moment.khNewYearMoments[gregorianYear] !== undefined) {
-			// console.log('cache')
-			return {
-				date: Moment(Moment.khNewYearMoments[gregorianYear], "DD-MM-YYYY H:m"),
-				days: [],
-			}
+		// console.log('calculate')
+		let getSoriyatraLerngSak
+		if (typeof require === "function") {
+			getSoriyatraLerngSak = require("./getSoriyatraLerngSak")
 		} else {
-			// console.log('calculate')
-			let getSoriyatraLerngSak
-			if (typeof require === "function") {
-				getSoriyatraLerngSak = require("./getSoriyatraLerngSak")
-			} else {
-				if (window) {
-					if (!window.getSoriyatraLerngSak) {
-						throw "Please import [MOMENTKH]/getSoriyatraLerngSak.js to your project"
-					} else {
-						getSoriyatraLerngSak = window.getSoriyatraLerngSak
-					}
+			if (window) {
+				if (!window.getSoriyatraLerngSak) {
+					throw "Please import [MOMENTKH]/getSoriyatraLerngSak.js to your project"
 				} else {
-					throw "Cannot import getSoriyatraLerngSak. This is might not a nodejs environment or a browser"
+					getSoriyatraLerngSak = window.getSoriyatraLerngSak
 				}
-			}
-			// ពីគ្រិស្ដសករាជ ទៅ ចុល្លសករាជ
-			let jsYear = gregorianYear + 544 - 1182
-			let info = getSoriyatraLerngSak(jsYear)
-			// ចំនួនថ្ងៃចូលឆ្នាំ
-			let numberNewYearDay
-			if (info.newYearsDaySotins[0].angsar === 0) {
-				// ថ្ងៃ ខែ ឆ្នាំ ម៉ោង និង នាទី ចូលឆ្នាំ
-				// ចូលឆ្នាំ ៤ ថ្ងៃ
-				numberNewYearDay = 4
-				// return Moment(`13-04-${gregorianYear} ${info.timeOfNewYear.hour}:${info.timeOfNewYear.minute}`, 'DD-MM-YYYY H:m')
 			} else {
-				// ចូលឆ្នាំ ៣ ថ្ងៃ
-				numberNewYearDay = 3
-				// return Moment(`14-04-${gregorianYear} ${info.timeOfNewYear.hour}:${info.timeOfNewYear.minute}`, 'DD-MM-YYYY H:m')
+				throw "Cannot import getSoriyatraLerngSak. This is might not a nodejs environment or a browser"
 			}
-			let epochLerngSak = Moment(
-				`17-04-${gregorianYear} ${info.timeOfNewYear.hour}:${info.timeOfNewYear.minute}`,
-				"DD-MM-YYYY H:m"
-			)
-			let khEpoch = findLunarDate(epochLerngSak)
-			let diffFromEpoch =
-				(khEpoch.month - 4) * 30 +
-				khEpoch.day -
-				((info.lunarDateLerngSak.month - 4) * 30 + info.lunarDateLerngSak.day)
-			let result = epochLerngSak.subtract(
-				diffFromEpoch + numberNewYearDay - 1,
-				"day"
-			)
-			// Caching
-			// Moment.khNewYearMoments[gregorianYear] = result.format("DD-MM-YYYY H:m")
+		}
+		// ពីគ្រិស្ដសករាជ ទៅ ចុល្លសករាជ
+		let jsYear = gregorianYear + 544 - 1182
+		let info = getSoriyatraLerngSak(jsYear)
+		// ចំនួនថ្ងៃចូលឆ្នាំ
+		let numberNewYearDay
+		if (info.newYearsDaySotins[0].angsar === 0) {
+			// ថ្ងៃ ខែ ឆ្នាំ ម៉ោង និង នាទី ចូលឆ្នាំ
+			// ចូលឆ្នាំ ៤ ថ្ងៃ
+			numberNewYearDay = 4
+			// return Moment(`13-04-${gregorianYear} ${info.timeOfNewYear.hour}:${info.timeOfNewYear.minute}`, 'DD-MM-YYYY H:m')
+		} else {
+			// ចូលឆ្នាំ ៣ ថ្ងៃ
+			numberNewYearDay = 3
+			// return Moment(`14-04-${gregorianYear} ${info.timeOfNewYear.hour}:${info.timeOfNewYear.minute}`, 'DD-MM-YYYY H:m')
+		}
+		let epochLerngSak = Moment(
+			`17-04-${gregorianYear} ${info.timeOfNewYear.hour}:${info.timeOfNewYear.minute}`,
+			"DD-MM-YYYY H:m"
+		)
+		let khEpoch = findLunarDate(epochLerngSak)
+		let diffFromEpoch =
+			(khEpoch.month - 4) * 30 +
+			khEpoch.day -
+			((info.lunarDateLerngSak.month - 4) * 30 + info.lunarDateLerngSak.day)
+		let result = epochLerngSak.subtract(
+			diffFromEpoch + numberNewYearDay - 1,
+			"day"
+		)
+		// Caching
+		// Moment.khNewYearMoments[gregorianYear] = result.format("DD-MM-YYYY H:m")
 
-			let newYearDate = []
-			for (let i = 0; i < numberNewYearDay; i++) {
-				const days = 0 + i
-				newYearDate.push(result.clone().add(days, "days").format())
-			}
-			return {
-				date: result.format(),
-				days: newYearDate,
-			}
+		let newYearDate = []
+		for (let i = 0; i < numberNewYearDay; i++) {
+			const days = 0 + i
+			newYearDate.push(result.clone().add(days, "days").format())
+		}
+		return {
+			date: result.format(),
+			days: newYearDate,
 		}
 	}
 
